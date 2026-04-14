@@ -6,26 +6,26 @@ The purpose of this project is to practice and demonstrate an understanding of *
 
  Features
 
-* Get all contacts
-* Get a contact by ID
-* Add a new contact
-* Update an existing contact
-* Delete a contact
+           Get all contacts
+           Get a contact by ID
+           Add a new contact
+           Update an existing contact
+           Delete a contact
 
  Technologies Used
 
-* ASP.NET Core Web API
-* C#
-* Postman (for testing)
+    ASP.NET Core Web API
+    C#
+    Postman (for testing)
 
  Project Status
 
 This project is **actively being developed** as I continue learning more about RESTful APIs and backend development. Future improvements will include:
 
-* Database integration (SQL Server)
-* Input validation
-* Authentication (JWT)
-* Improved error handling
+     Database integration (SQL Server)
+     Input validation
+     Authentication (JWT)
+     Improved error handling
 
  Goal
 
