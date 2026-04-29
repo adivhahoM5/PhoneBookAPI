@@ -1,77 +1,83 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PhoneBookAPI.Models;
+using System.Collections.Immutable;
 
 namespace PhoneBookAPI.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
+[ApiController]
 public class ContactController : ControllerBase
 {
-    private static List<Contact> contacts = new List<Contact>();
-    private static int nextId = 1;
-
-    // GET: api/contact
-    [HttpGet]
-    public IActionResult GetAll()
+    static private List<Contact> contacts = new List<Contact>
+    {
+        new Contact
+        { Id = 1,
+          Name = "Sarah",
+          Phone = "0763549335",
+          Email ="sarah@gmail.com"
+        },
+        new Contact
+        { Id = 2,
+          Name = "Mona",
+          Phone = "0836594123",
+          Email ="mona@gmail.com"
+        },
+        new Contact
+        { Id = 3,
+          Name = "Earl",
+          Phone = "0725698756",
+          Email ="earl@gmail.com"
+        }
+    };
+    [HttpGet]                                                          
+    public ActionResult<List<Contact>> GetContact()
     {
         return Ok(contacts);
     }
 
-    // GET: api/contact/1
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public ActionResult<Contact> GetContactByID(int id)
     {
-        var contact = contacts.FirstOrDefault(c => c.Id == id);
-
+        var contact = contacts.FirstOrDefault(x => x.Id == id);
         if (contact == null)
-        {
-            return NotFound("Contact not found");
-        }
+            return NotFound();
 
         return Ok(contact);
     }
 
-    // POST: api/contact
     [HttpPost]
-    public IActionResult Create(Contact contact)
+    public ActionResult<List<Contact>> AddContact([FromBody] Contact newContact)
     {
-        contact.Id = nextId++;
-        contacts.Add(contact);
+        if (newContact == null)
+        {
+            return BadRequest();
+        }
+        newContact.Id = contacts.Count + 1;
+        contacts.Add(newContact);
+        return Ok(contacts);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateContact(int id, [FromBody] Contact updatedContact)
+    {
+        var contact = contacts.FirstOrDefault(x => x.Id == id);
+        if (contact == null)
+            return NotFound();
+        contact.Name = updatedContact.Name;
+        contact.Phone = updatedContact.Phone;
+        contact.Email = updatedContact.Email;
 
         return Ok(contact);
     }
 
-    // PUT: api/contact
-    [HttpPut]
-    public IActionResult Update(Contact contact)
-    {
-        var existing = contacts.FirstOrDefault(c => c.Id == contact.Id);
-
-        if (existing == null)
-        {
-            return NotFound("Contact not found");
-        }
-
-        existing.Name = contact.Name;
-        existing.Phone = contact.Phone;
-        existing.Email = contact.Email;
-
-        return Ok(existing);
-    }
-
-    // DELETE: api/contact/1
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public IActionResult deleteContact(int id)
     {
-        var contact = contacts.FirstOrDefault(c => c.Id == id);
-
+        var contact = contacts.FirstOrDefault(x => x.Id == id);
         if (contact == null)
-        {
-            return NotFound("Contact not found");
-        }
-
+            return NotFound();
         contacts.Remove(contact);
-
-        return Ok("Deleted successfully");
+        return Ok(contact);
     }
+
 }
